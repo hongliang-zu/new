@@ -1,0 +1,94 @@
+ 
+第一种方法
+暴力求解
+1.	new一个二维boolean类型数组，初始化为true
+2.	将二维boolean类型的数组中对应的障碍物的坐标设置为false，仅仅考虑障碍物的坐标在x，y的范围之内
+3.	While循环每一个command的每一个字符，并做出相应的调整，字符为‘U’调整pathX++，字符为‘R’调整pathY++。每次改动pathX，pathY判断是否遇到障碍，然后在判断是否到达终点。
+1.	public static boolean robot(String command,int[][] obstacles,int x,int y) {
+2.	        int pathX=0;  
+3.	        int pathY=0;  
+4.	        boolean flag=false;  
+5.	        boolean[][] m=new boolean[x+1][y+1];  
+6.	        for(int i=0;i<=x;i++){  
+7.	            for(int j=0;j<=y;j++){  
+8.	                m[i][j]=true;  
+9.	            }  
+10.	        }  
+11.	        for(int i=0;i<obstacles.length;i++){  
+12.	            int a=obstacles[i][0];  
+13.	            int b=obstacles[i][1];  
+14.	            if(a<=x&&b<=y){  
+15.	                m[a][b]=false;  
+16.	            }  
+17.	        }  
+18.	        int count=0;  
+19.	        while(pathX<=x&&pathY<=y){  
+20.	            char temp=command.charAt(count++);  
+21.	            if(count==command.length()){  
+22.	                count=0;  
+23.	            }  
+24.	            if(temp=='U'){  
+25.	                pathY++;  
+26.	            }else if(temp=='R'){  
+27.	                pathX++;  
+28.	            }  
+29.	            if(!m[pathX][pathY]){  
+30.	                break;  
+31.	            }  
+32.	            if(pathX==x&&pathY==y){  
+33.	                flag=true;  
+34.	                break;  
+35.	            }  
+36.	              
+37.	        }  
+38.	        return flag;  
+39.	    }  
+提交结果
+ 
+第二种方法
+1.	public static boolean robot(String command,int[][] obstacles,int x,int y) {  
+2.	    // TODO Auto-generated method stub  
+3.	    for(int[] a:obstacles){  
+4.	        int pX=a[0];  
+5.	        int pY=a[1];  
+6.	        if(pX+pY>x+y){  
+7.	            continue;  
+8.	        }  
+9.	        if(getC(pX,pY,command)){  
+10.	            return false;  
+11.	        }  
+12.	    }  
+13.	      
+14.	    return getC(x,y,command);  
+15.	  
+16.	}  
+17.	  
+18.	private static boolean getC(int X, int Y, String command) {  
+19.	    // TODO Auto-generated method stub  
+20.	    int time=(X+Y)/command.length();  
+21.	    int extra=(X+Y)%command.length();  
+22.	    int[] xyStep=getDirectionCount(command,command.length());  
+23.	    int[] xyStepE=getDirectionCount(command,extra);  
+24.	    xyStep[0]=xyStep[0]*time+xyStepE[0];//U的个数  
+25.	    xyStep[1]=xyStep[1]*time+xyStepE[1];//R的个数  
+26.	    return Y==xyStep[0]&&X==xyStep[1];  
+27.	}  
+28.	  
+29.	private static int[] getDirectionCount(String command, int length) {  
+30.	    // TODO Auto-generated method stub  
+31.	    int[] count=new int[]{0,0};  
+32.	    char[] charArr=command.toCharArray();  
+33.	    System.out.println("length:"+length);  
+34.	    System.out.println("charArr.length:"+charArr.length);  
+35.	    for(int i=0;i<length;i++){  
+36.	        if(charArr[i]=='U'){  
+37.	            count[0]++;  
+38.	        }else {  
+39.	            count[1]++;  
+40.	        }  
+41.	    }  
+42.	    return count;  
+43.	}  
+提交结果
+ 
+
